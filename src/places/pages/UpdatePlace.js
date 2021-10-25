@@ -1,4 +1,5 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import Avatar from "@mui/material/Avatar";
@@ -6,32 +7,72 @@ import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
+import UpdateIcon from "@mui/icons-material/Update";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
+const DUMMY_PLACES = [
+  {
+    id: "p1",
+    title: "Empire State Building",
+    description: "One of the most famous sky scrapers in the world!",
+    imageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/NYC_Empire_State_Building.jpg/640px-NYC_Empire_State_Building.jpg",
+    address: "20 W 34th St, New York, NY 10001",
+    location: {
+      lat: 40.7484405,
+      lng: -73.9878584,
+    },
+    creator: "u1",
+  },
+  {
+    id: "p2",
+    title: "Empire State Building",
+    description: "One of the most famous sky scrapers in the world!",
+    imageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/NYC_Empire_State_Building.jpg/640px-NYC_Empire_State_Building.jpg",
+    address: "20 W 34th St, New York, NY 10001",
+    location: {
+      lat: 40.7484405,
+      lng: -73.9878584,
+    },
+    creator: "u2",
+  },
+];
+
 const validationSchema = yup.object({
-  title: yup.string("Enter your title").required("Title is required"),
+  title: yup.string("Enter for Update title").required("Title is required"),
   description: yup
-    .string("Enter your description")
+    .string("Enter for Update description")
     .min(8, "Description should be of minimum 8 characters length")
     .required("Description is required"),
 });
 
 const theme = createTheme();
 
-const NewPlace = () => {
+const UpdatePlace = () => {
+  const placeId = useParams().placeId;
+  const identifiedPlace = DUMMY_PLACES.find((p) => p.id === placeId);
+
   const formik = useFormik({
     initialValues: {
-      title: "",
-      description: "",
+      title: `${identifiedPlace.title}`,
+      description: `${identifiedPlace.description}`,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
     },
   });
+
+  if (!identifiedPlace) {
+    return (
+      <div className="center">
+        <h2>Could not find place!</h2>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -47,10 +88,10 @@ const NewPlace = () => {
             }}
           >
             <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <AddLocationAltIcon />
+              <UpdateIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              New Places
+              Update Places
             </Typography>
             <Box
               component="form"
@@ -62,9 +103,8 @@ const NewPlace = () => {
               <TextField
                 id="title"
                 name="title"
-                placeholder="Please Enter Title"
-                value={formik.values.title}
                 style={{ width: 400 }}
+                value={formik.values.title}
                 onChange={formik.handleChange}
                 error={formik.touched.title && Boolean(formik.errors.title)}
                 helperText={formik.touched.title && formik.errors.title}
@@ -73,8 +113,6 @@ const NewPlace = () => {
                 multiline
                 id="description"
                 name="description"
-                type="description"
-                placeholder="Please Enter Description"
                 rows={4}
                 style={{ width: 400, marginTop: 10 }}
                 value={formik.values.description}
@@ -94,7 +132,7 @@ const NewPlace = () => {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Add Place
+                Update Place
               </Button>
             </Box>
           </Box>
@@ -104,4 +142,4 @@ const NewPlace = () => {
   );
 };
 
-export default NewPlace;
+export default UpdatePlace;

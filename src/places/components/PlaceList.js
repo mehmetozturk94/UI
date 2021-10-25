@@ -1,6 +1,7 @@
 import React from "react";
 import Card from "../../ui/components/UIElements/Card";
 import PlaceItem from "./PlaceItem";
+import {Button} from "react-bootstrap"
 import "./PlaceList.css";
 
 const PlaceList = (props) => {
@@ -9,7 +10,7 @@ const PlaceList = (props) => {
       <div className="place-list center">
         <Card>
           <h2>No places found. Maybe create one?</h2>
-          <button>Share Place</button>
+          <Button href="/places/new">Share Place</Button>
         </Card>
       </div>
     );

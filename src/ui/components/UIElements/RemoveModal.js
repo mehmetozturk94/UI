@@ -1,11 +1,11 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
 
-const MyModal = (props) => {
+const RemoveModal = (props) => {
   return (
     <Modal
       {...props}
-      size="lg"
+      size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
@@ -14,12 +14,12 @@ const MyModal = (props) => {
           {props.header}
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body >{props.children}</Modal.Body>
       <Modal.Footer>
-        <Button onClick={props.onHide}>Close</Button>
+        <Button variant="danger" onClick={props.onHide}>
+          Delete
+        </Button>
       </Modal.Footer>
     </Modal>
   );
 };
-export default MyModal;
-
+export default RemoveModal;

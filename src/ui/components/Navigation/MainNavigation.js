@@ -1,5 +1,6 @@
-import React from "react";
+import React, {useContext} from "react";
 import MainHeader from "./MainHeader";
+import { AuthContext } from "../../context/auth-context";
 import {
   Button,
   Navbar,
@@ -11,9 +12,11 @@ import {
 } from "react-bootstrap";
 
 const MainNavigation = (props) => {
+  const auth = useContext(AuthContext);
+
   return (
     <MainHeader>
-      <Navbar bg="light" expand="lg">
+      <Navbar bg="light" variant="light" expand="lg">
         <Container fluid>
           <Navbar.Brand href="#">ÖZTÜRK</Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
@@ -24,18 +27,15 @@ const MainNavigation = (props) => {
               navbarScroll
             >
               <Nav.Link href="/">Home</Nav.Link>
-              <Nav.Link href="/u1/places" >Places</Nav.Link>
-              <Nav.Link href="/places/new">New Places</Nav.Link>
-              <NavDropdown title="Authenticate" id="navbarScrollingDropdown">
-                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action4">
-                  Another action
+              {auth.isLoggedIn && <Nav.Link href="/u1/places" >Places</Nav.Link>}
+              {auth.isLoggedIn && <Nav.Link href="/places/new">New Places</Nav.Link>}
+              {!auth.isLoggedIn && <NavDropdown title="Authenticate" id="navbarScrollingDropdown">
+                <NavDropdown.Item href="/Signin">Signin</NavDropdown.Item>
+                <NavDropdown.Item href="/Signup">
+                  Signup
                 </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action5">
-                  Something else here
-                </NavDropdown.Item>
-              </NavDropdown>
+                
+              </NavDropdown>}
             </Nav>
             <Form className="d-flex">
               <FormControl
