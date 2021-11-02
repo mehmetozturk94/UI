@@ -27,8 +27,8 @@ const MainNavigation = (props) => {
               navbarScroll
             >
               <Nav.Link href="/">Home</Nav.Link>
-              {auth.isLoggedIn && <Nav.Link href="/u1/places" >Places</Nav.Link>}
-              {auth.isLoggedIn && <Nav.Link href="/places/new">New Places</Nav.Link>}
+              <Nav.Link href="/u1/places" >Places</Nav.Link>
+              <Nav.Link href="/places/new">New Places</Nav.Link>
               {!auth.isLoggedIn && <NavDropdown title="Authenticate" id="navbarScrollingDropdown">
                 <NavDropdown.Item href="/Signin">Signin</NavDropdown.Item>
                 <NavDropdown.Item href="/Signup">
@@ -36,6 +36,7 @@ const MainNavigation = (props) => {
                 </NavDropdown.Item>
                 
               </NavDropdown>}
+              {auth.isLoggedIn && <Nav.Link onClick={auth.logout}>Logout</Nav.Link>}
             </Nav>
             <Form className="d-flex">
               <FormControl

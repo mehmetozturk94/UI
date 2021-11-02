@@ -1,14 +1,12 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Card from "../../ui/components/UIElements/Card";
 import { Button } from "react-bootstrap";
 import MyModal from "../../ui/components/UIElements/Modal";
 import RemoveModal from "../../ui/components/UIElements/RemoveModal";
 import Map from "../../ui/components/UIElements/Map";
-import { AuthContext } from "../../ui/context/auth-context";
 import "./PlaceItem.css";
 
 const PlaceItem = (props) => {
-  const auth = useContext(AuthContext);
   const [showMap, setShowMap] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const [secondModalShow, setSecondModalShow] = useState(false);
@@ -54,10 +52,10 @@ const PlaceItem = (props) => {
             <Button variant="outline-success" onClick={() => openMapHandler()}>
               View on Map
             </Button>{" "}
-            {auth.isLoggedIn && <Button href={`/places/${props.id}`} variant="outline-warning">
+            <Button href={`/places/${props.id}`} variant="outline-warning">
               Edit
-            </Button>}
-            {auth.isLoggedIn && <Button onClick={() => openModalHandler()} variant="outline-danger">Delete</Button>}
+            </Button>
+            <Button onClick={() => openModalHandler()} variant="outline-danger">Delete</Button>
           </div>
         </Card>
       </li>

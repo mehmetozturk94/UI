@@ -1,18 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import UsersList from "../components/UsersList";
+import ErrorModal from "../../ui/components/UIElements/ErrorModal";
+import LoadingSpinner from "../../ui/components/UIElements/LoadingSpinner";
 
 const Users = () => {
-  const USERS = [
-    {
-      id: "u1",
-      name: "Mehmet Öztürk",
-      image:
-        "https://images.pexels.com/photos/839011/pexels-photo-839011.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-      places: 3,
-    },
-  ];
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [users, setUsers] = useState();
+  //Get Method
+  //Get Users From API
+  useEffect(() => {
+    const sendRequest = async () => {
+      setIsLoading(true);
+      await axios({
+        method: "get",
+        url: "http://localhost:5000/api/users",
+        responseType: "stream",
+      })
+        .then(function (response) {
+          setUsers(response.data.users);
+          setIsLoading(false);
+        })
+        .catch(function (response) {
+          setError("Something Went Wrong, Please Try Again", response);
+        });
+      setIsLoading(false);
+    };
+    sendRequest();
+  }, []);
 
-  return <UsersList items={USERS} />;
+  const errorHandler = () => {
+    setError(null);
+  };
+
+  return (
+    <React.Fragment>
+      <ErrorModal error={error} onClear={errorHandler} />
+      {isLoading && (
+        <div className="center">
+          <LoadingSpinner />
+        </div>
+      )}
+      {users && <UsersList items={users} />}
+    </React.Fragment>
+  );
 };
 
 export default Users;

@@ -1,4 +1,5 @@
 import React, {useContext} from "react";
+import axios from "axios";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import Avatar from "@mui/material/Avatar";
@@ -21,7 +22,7 @@ const validationSchema = yup.object({
     .required("Email is required"),
   password: yup
     .string("Enter your password")
-    .min(8, "Password should be of minimum 8 characters length")
+    .min(6, "Password should be of minimum 6 characters length")
     .required("Password is required"),
 });
 
@@ -29,25 +30,32 @@ const theme = createTheme();
 
 export default function Signin() {
   const auth = useContext(AuthContext);
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
-
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
     validationSchema: validationSchema,
+    
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-      auth.login();
+      //auth.login();
+      axios({
+        method: "post",
+        url: "http://localhost:5000/api/users/login",
+        data: JSON.stringify({
+          email: values.email,
+          password: values.password,
+        }),
+        headers: { "Content-Type": "application/json" },
+      })
+        .then(function (response) {
+          //handle success
+          alert("Login Successfully");
+        })
+        .catch(function (response) {
+          //handle error
+          alert("Login Not Successfully");
+        });
     },
   });
 
